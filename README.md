@@ -52,8 +52,8 @@
 :beers: 本仓库储存仓主写的关于学习的文档，可以直接在`products`中下载`.pdf`等格式。
 
 <p align='left'>
-<a href="https://github.com/zhangbaiyi/slowandsteady/issues/new" target="_blank"><img alt="Website" src="https://img.shields.io/static/v1?label=&#x1F64F来点儿&message=issue&labelColor=blue&color=000000"></a>
-    <a href="https://github.com/zhangbaiyi/slowandsteady/discussions/new" target="_blank"><img alt="Website" src="https://img.shields.io/static/v1?label=&#x1F444来点儿&message=Discussion&labelColor=blue&color=000000"></a>
+<a href="https://github.com/zhangbaiyi/slowandsteady/issues/new" target="_blank"><img alt="Website" src="https://img.shields.io/static/v1?label=Go to&message=Issues&labelColor=blue&color=000000"></a>
+    <a href="https://github.com/zhangbaiyi/slowandsteady/discussions/new" target="_blank"><img alt="Website" src="https://img.shields.io/static/v1?label=Go to&message=Discussions&labelColor=blue&color=000000"></a>
     </p>
 
 
