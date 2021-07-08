@@ -1,6 +1,6 @@
 
 
-<div align=right><img src =".\images\logo.png"/></div>
+<div align=right><img src ="images\logo.png"/></div>
 
 # <center>slowandsteady<center>
 
