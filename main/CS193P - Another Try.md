@@ -164,6 +164,8 @@ In the following example, a [`ScrollView`](doc://com.apple.documentation/documen
  }
 ```
 
+The `HStack` uses **all the space it can**. But the `LazyVGrid` distributes the space quite differently. It uses all the space horizontally but the least possible space vertically.
+
 
 
 
