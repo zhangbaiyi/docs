@@ -83,15 +83,40 @@ var body: some View {
   ForEach(namedFonts) { namedFont in        
          Text(namedFont.name)            
                .font(namedFont.font)    
-                      }}
+                      }
+}
 ```
 
+So this explains the error below.
+
 ```swift
-ForEach(emojis, content:{ emoji 
+ForEach(emojis, content:{ emoji in
 //err: Referencing initializer 'init(_:content)' on 'ForEach' requires that 'String' conform to 'Identifiable'
     CardView(content: emoji)
 })
 ```
+
+For now, we only want the view to generate different emojis. So we do this:
+
+```swift
+ForEach(emojis, id: \.self, content:{ emoji 
+    CardView(content: emoji)
+})
+```
+
+> When we use `\.self` as an identifier, we mean “the whole object”, but in practice that doesn’t mean much – a struct is a struct, so it doesn’t have any sort of specific identifying information other than its contents. So what actually happens is that Swift computes the *hash value* of the struct, which is a way of representing complex data in fixed-size values, then uses that hash as an identifier.
+
+### Buttons
+
+
+
+
+
+
+
+
+
+
 
 
 
