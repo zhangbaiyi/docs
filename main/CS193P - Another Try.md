@@ -106,6 +106,40 @@ ForEach(emojis, id: \.self, content:{ emoji
 
 > When we use `\.self` as an identifier, we mean “the whole object”, but in practice that doesn’t mean much – a struct is a struct, so it doesn’t have any sort of specific identifying information other than its contents. So what actually happens is that Swift computes the *hash value* of the struct, which is a way of representing complex data in fixed-size values, then uses that hash as an identifier.
 
+### Buttons
+
+Two equivalent wayof putting a button:
+
+```swift
+		var remove: some View {
+        Button(action: {
+            if emojiCount < emojis.count
+            {
+                emojiCount-=1
+            }
+        }, label: { Image(systemName: "minus") })
+    }
+    
+    var add: some View {
+        Button{
+            if emojiCount > 1
+            {
+                emojiCount-=1
+            }
+        } label: { Image(systemName: "plus") }
+    }
+
+// and these views can be add directly to the major big view.
+
+	HStack
+  {
+  	add
+    Spacer()
+    remove
+  }
+	.padding(.horizontal)
+```
+
 
 
 
