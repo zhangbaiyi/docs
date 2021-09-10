@@ -140,9 +140,29 @@ HStack{
 
 ### LazyVGrid
 
-To display our cards in grid style, we use this 
+To display our cards in grid style, we use this type of `View Layout and Presentation`.
 
+#### Overview - LazyVGrid
 
+The grid is “lazy,” in that the grid view does not create items until they are needed.
+
+In the following example, a [`ScrollView`](doc://com.apple.documentation/documentation/swiftui/scrollview?language=swift) contains a `LazyVGrid`consisting of a two-column grid of [`Text`](doc://com.apple.documentation/documentation/swiftui/text?language=swift) views, showing Unicode code points from the “Smileys” group and their corresponding emoji:
+
+```swift
+ var columns: [GridItem] =
+         Array(repeating: .init(.flexible()), count: 2)
+ ScrollView {
+     LazyVGrid(columns: columns) {
+         ForEach((0...79), id: \.self) {
+             let codepoint = $0 + 0x1f600
+             let codepointString = String(format: "%02X", codepoint)
+             Text("\(codepointString)")
+             let emoji = String(Character(UnicodeScalar(codepoint)!))
+             Text("\(emoji)")
+         }
+     }.font(.largeTitle)
+ }
+```
 
 
 
