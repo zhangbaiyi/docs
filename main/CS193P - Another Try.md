@@ -58,7 +58,33 @@ So an array is a bag of Lego. Now I want to create a CardView for each Lego in t
 
 Apple's Official Doc for `ForEach`:
 
+#### Overview - ForEach
 
+Use `ForEach` to provide views based on a [`RandomAccessCollection`](doc://com.apple.documentation/documentation/swift/randomaccesscollection?language=swift) of some data type. Either the collection’s elements must conform to [`Identifiable`](doc://com.apple.documentation/documentation/swift/identifiable?language=swift) or you need to provide an `id`parameter to the `ForEach` initializer.
+
+The following example creates a `NamedFont` type that conforms to [`Identifiable`](doc://com.apple.documentation/documentation/swift/identifiable?language=swift), and an array of this type called `namedFonts`. A `ForEach` instance iterates over the array, producing new [`Text`](doc://com.apple.documentation/documentation/swiftui/text?language=swift)instances that display examples of each SwiftUI [`Font`](doc://com.apple.documentation/documentation/swiftui/font?language=swift) style provided in the array.
+
+```swift
+private struct NamedFont: Identifiable 
+{    
+  let name: String    
+  let font: Font    
+  var id: String { name }
+}
+
+private let namedFonts: [NamedFont] = [    
+  NamedFont(name: "Large Title", font: .largeTitle),    
+  NamedFont(name: "Title", font: .title),    
+  NamedFont(name: "Headline", font: .headline),    
+  NamedFont(name: "Body", font: .body),    
+  NamedFont(name: "Caption", font: .caption)]
+
+var body: some View {    
+  ForEach(namedFonts) { namedFont in        
+         Text(namedFont.name)            
+               .font(namedFont.font)    
+                      }}
+```
 
 ```swift
 ForEach(emojis, content:{ emoji 
