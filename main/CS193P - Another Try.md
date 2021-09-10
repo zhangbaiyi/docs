@@ -108,7 +108,7 @@ ForEach(emojis, id: \.self, content:{ emoji
 
 ### Buttons
 
-Two equivalent wayof putting a button:
+Two equivalent way of putting a button:
 
 ```swift
 		var remove: some View {
@@ -131,20 +131,16 @@ Two equivalent wayof putting a button:
 
 // and these views can be add directly to the major big view.
 
-	HStack
-  {
+HStack{
   	add
     Spacer()
     remove
-  }
-	.padding(.horizontal)
+  }.padding(.horizontal)
 ```
 
+### LazyVGrid
 
-
-
-
-
+To display our cards in grid style, we use this 
 
 
 
