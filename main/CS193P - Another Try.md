@@ -204,3 +204,35 @@ Here is a partial list of concepts this assignment is intended to let you gain p
 `emojiCount = Int.random(in: 4...24)` 
 
 > Try to come up with some sort of equation that relates the number of cards in the game to the width you pass when you create your `LazyVGrid’s GridItem(.adaptive(minimum:maximum:))` such that each time a theme button is chosen, the `LazyVGrid` makes the cards as big as possible without having to scroll.
+
+So I used a function to **roughly** calculate this value. Since I don't quite know how to access the exact width and height of the gaming area, I guessed the value instead. The shitty part of the code below which contains a random fraction number is the result of that.
+
+```swift
+func widthsThatBestFits(cardCount: Int) -> CGFloat{
+    var curWidth: CGFloat = UIScreen.main.bounds.width
+    var curHeight: CGFloat = UIScreen.main.bounds.height
+    curWidth = curWidth * 9/10
+    curHeight = curHeight * 2/3
+    var result : CGFloat = curWidth
+    var curRows: Int = 0
+    var curCols: Int = 0
+    for myRes in (1...Int(curWidth)).reversed() {
+        curCols = Int(floor(curWidth/CGFloat(myRes)))
+        curRows = Int(ceil(Double(cardCount / curCols)))
+        if (CGFloat(curRows*myRes)*3)>curHeight
+        {
+            continue
+        }
+        else{
+            result = CGFloat(myRes)
+            return result
+        }
+    }
+    return result
+}
+```
+
+This works well when `cardCount` is 4, but not well when it's 5. I think It'd be quite eloqunt if I knew the exact width/height of the center area. Maybe `lldb` debugger can help?
+
+But now let's call it a day and move on.
+
