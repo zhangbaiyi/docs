@@ -238,7 +238,11 @@ But now let's call it a day and move on.
 
 Here's my app's screenshots
 
+After paras adjusting, theses are displayed beautifully:
+
 ![Works kinda well](../images/cs193p-assignment1-1.png)
+
+But these aren't.
 
 <img src="../images/cs193p-assignment1-2.png" alt="Works not so well" style="zoom:50%;" />
 
