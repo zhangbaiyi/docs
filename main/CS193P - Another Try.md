@@ -166,9 +166,41 @@ In the following example, a [`ScrollView`](doc://com.apple.documentation/documen
 
 The `HStack` uses **all the space it can**. But the `LazyVGrid` distributes the space quite differently. It uses all the space horizontally but the least possible space vertically.
 
+### Homework - Assignment 1
 
+[CS193P - Programming Assignment 1](https://cs193p.sites.stanford.edu/sites/g/files/sbiybj16636/files/media/file/assignment_1.pdf)
 
+After this assignment, what really matters to me is that I fixed an issue to make images and text align in the ideal way.
 
+If you hardcode `VStack` of `Button`'s `Image` and `Text`, when you `HStack` the `VStack`s they don't align due to the SF Symbol images are in different sizes. To solve this, use the `.fixedSize()` and `frame()` methods in `View`s
 
+Secondly, the multi-theme problem, can be easily solved use a 2-D array. But the array had better not to be `let`. Because to display them in unpredictable order, we call `array.shuffle()` in the theme button actions. Thanks to Swift's simplicity this is relatively easy.
 
+#### Things to Learn 
 
+Here is a partial list of concepts this assignment is intended to let you gain practice with or otherwise demonstrate your knowledge of. 
+
+1. Xcode 12 
+2. Swift 5.4 
+3. Writing code in the in-line function that supplies the value of a View’s body `var` 
+4. Syntax for passing closures (aka in-line functions) (i.e. code in { }) as arguments 
+5. Understanding the syntax of a `ViewBuilder` (e.g. “bag of Lego”) function 
+6. Using basic building block Views like `Text`, `Button`, `Spacer`, etc. 
+7. Putting Views together using `VStack`, `HStack`, etc. 
+8.  Modifying Views (using .font(), etc.) 
+9. Using `@State` (we’ll learn much more about this construct later, by the way) 
+10. Very simple use of Array 
+11. Using a Range (e.g. `0..<emojiCount`) as a subscript to an Array
+12. The SF Symbols application 
+13. Putting system images into your UI using `Image(systemName:)` 
+14. Looking things up in the documentation (Array and possibly Font) 
+15. `Int.random(in:)` (Extra Credit) 
+16. Running your application in different simulators
+
+#### Extra Credits
+
+> Make a random number of cards appear each time a theme button is chosen
+
+`emojiCount = Int.random(in: 4...24)` 
+
+> Try to come up with some sort of equation that relates the number of cards in the game to the width you pass when you create your `LazyVGrid’s GridItem(.adaptive(minimum:maximum:))` such that each time a theme button is chosen, the `LazyVGrid` makes the cards as big as possible without having to scroll.
