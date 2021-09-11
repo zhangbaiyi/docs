@@ -236,3 +236,9 @@ This works well when `cardCount` is 4, but not well when it's 5. I think It'd be
 
 But now let's call it a day and move on.
 
+Here's my app's screenshots
+
+![Works kinda well](../images/cs193p-assignment1-1.png)
+
+<img src="../images/cs193p-assignment1-2.png" alt="Works not so well" style="zoom:50%;" />
+
