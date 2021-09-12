@@ -168,7 +168,24 @@ The `HStack` uses **all the space it can**. But the `LazyVGrid` distributes the 
 
 
 
+## Letcure 3 - MVVM and the Swift type system
 
+### MVVM
 
+*Model-View-ViewModel*
 
+**Model**: UI independent. Pure data and logic. Backbend of the app. Single source of "Truth".
 
+**View**: Reflects the model. Stateless, so ~~@State~~ is not a regular solution to logic in the apps. `@State` only facilitating transient movements in the UI. View is immutable. **Declared**: It performs exactly what we declared in the `body var`. Imperative. 
+
+Data flows from Model to View (i.e. read-only). Any change inthe model will cause the affected parts of the view to be rebuilt.
+
+**ViewModel**: Binds View to Model. Sort of a **Interpreter**. A **Gatekeeper**. The View will always get data from the Model from The ViewModel. Constantly noticing changes in the Model, the publishes "something changes" to those interested in such changes. The View automatically observes publications and pulls data and rebuilds.
+
+For the VM, there are keywords like... `ObservableObject`, `@Published`, `objectWillChange.send()`...
+
+For the View, there are `@ObservedObejct`, `@Binding`, `.onReceive`, `@EnvironmentObject`, `.environmentObject()`...
+
+**But what about the other direction?**
+
+After the user interacts with the View, the View calls Intent Function to the VM. The VM processes Intent and modifies the Model. This is often seen in *Store Data* process. Make sure to leave database access statements in the VM.
