@@ -330,3 +330,8 @@ let result2 = operation(2)
 
 ### Back to Demo
 
+#### `private(set) var model: MemoryGame<String>`
+
+`private`: access control. Prevent the View from touching our model.
+
+`(set)`: This makes `get` gets default (internal) access control level but `set` private.
