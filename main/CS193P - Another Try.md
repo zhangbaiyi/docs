@@ -419,10 +419,17 @@ struct MemoryGame<CardContent> {
         //choose(curCard)
     }
   
-+  	init(numberOfPairOfCards: Int) {
-+      cards = Array<Card>()
-+    }
-  
+[+]  	init(numberOfPairOfCards: Int, createCardContent: (Int) -> CardContent) {
+[+]      	cards = Array<Card>()
+[+] 			for pairIndex in 0..<numberOfPairOfCards {
+[+]  					let content = createCardContent(pairIndex)
+[+]  					cards.append(Card(content: content))
+[+]    				cards.append(Card(content: content))
+[+]				}
+[+]
+[+]    }
+ 
+  //passing functions as arguments
 
     struct Card {
         var isFaceUp: Bool
@@ -432,5 +439,113 @@ struct MemoryGame<CardContent> {
 }
 ```
 
+To use this `init()`, in our `ViewModel`
 
+```swift
+class EmojiMemoryGame {
+    private var model: MemoryGame<String> = MemoryGame<String>(numberOfPairsOfCards: 4, createCardContent: makeCardContent)
+    var cards: Array<MemoryGame<String>.Card> {
+        return model.cards
+    }
+}
+```
+
+```swift
+func makeCardContent(index: Int) -> String {
+  return "**smileyemoji**"
+}
+```
+
+#### Simplify Simple Function
+
+Above is equivalent to:
+
+```swift
+    private var model: MemoryGame<String> = 
+  		MemoryGame<String>(numberOfPairsOfCards: 4, createCardContent: { (index: Int) -> String in 
+          	return "**smileyemoji**" })
+```
+
+**Because it's just a function returns a certained string**, we don't need to point out types here. So this is equivalent to:
+
+```swift
+    private var model: MemoryGame<String> = 
+  		MemoryGame<String>(numberOfPairsOfCards: 4, createCardContent: { index in 
+          	return "**smileyemoji**" })
+```
+
+We don't need a "return" either because showing your string after `in` means this function returns a string.
+
+This is equivalent to:
+
+```swift
+    private var model: MemoryGame<String> = 
+  		MemoryGame<String>(numberOfPairsOfCards: 4, createCardContent: { index in "**smileyemoji**" })
+```
+
+Because `createCardContent` is the **last parameter** to the function and its **type is a `function`**, so in Swift we can do this:
+
+```swift
+    private var model: MemoryGame<String> = 
+  		MemoryGame<String>(numberOfPairsOfCards: 4){ _ in "**smileyemoji**" }
+```
+
+This is as simple as your code can be.
+
+**We can't get rid of the `'_'` ** bacause `in` means something is comming **in**, indicating that this is a function. This is probably how compiler checks the syntax. This is very @apple though.
+
+#### `static`
+
+We are now facing this:
+
+```swift
+class EmojiMemoryGame {
+    
+    let emojis = ["**array of emojis**"]
+   
+
+    private(set) var model: MemoryGame<String> = 
+  			MemoryGame<String>(numberOfPairsOfCards: 4){ pairIndex in
+                                                    emojis[pairIndex]
+                                                  	}
+    
+    var cards: Array<MemoryGame<String>.Card> {
+        return model.cards
+    }
+}
+```
+
+::red_circle:Cannot use instance member 'emojis' within **property** initializer; property initializers run before 'self' is available
+
+**self**: The `EmojiMemoryGame` itself.
+
+The order that `emojis` and `private(set) ... ` being initialized is **not determined**. Maybe you are using `emojis[]` before `emojis[]` initializes.
+
+`Init()` function solves this problem, because things can init in your preferred order.
+
+`Global Constant ` also solves this, but not a good code style.
+
+**`static`**: It's global but its name now includes the class name.
+
+`static let emojis = []` means `emojis[]` becomes `EmojiMemoryGame.emojis[]`
+
+We can do this to functions as well.
+
+```swift
+class EmojiMemoryGame {
+    
+    static let emojis = [...]
+    
+    static func createMemoryGame() -> MemoryGame<String> {
+        MemoryGame<String>(numberOfPairsOfCards: 4){ pairIndex in
+                    emojis[pairIndex] }
+    }
+
+    private(set) var model: MemoryGame<String> = createMemoryGame()
+    
+    var cards: Array<MemoryGame<String>.Card> {
+        return model.cards
+    }
+}
+```
 
