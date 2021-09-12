@@ -175,6 +175,7 @@ After this assignment, what really matters to me is that I fixed an issue to mak
 If you hardcode `VStack` of `Button`'s `Image` and `Text`, when you `HStack` the `VStack`s they don't align due to the SF Symbol images are in different sizes. To solve this, use the `.fixedSize()` and `frame()` methods in `View`s
 
 Secondly, the multi-theme problem, can be easily solved use a 2-D array. But the array had better not to be `let`. Because to display them in unpredictable order, we call `array.shuffle()` in the theme button actions. Thanks to Swift's simplicity this is relatively easy.
+*`Model`-`View`-`ViewModel`*
 
 #### Things to Learn 
 
@@ -198,6 +199,9 @@ Here is a partial list of concepts this assignment is intended to let you gain p
 16. Running your application in different simulators
 
 #### Extra Credits
+Data flows from Model to View (i.e. read-only). Any change in the model will cause the affected parts of the view to be rebuilt.
+
+**`ViewModel`**: Binds View to Model. Sort of a **Interpreter**. A **Gatekeeper**. The View will always get data from the Model from The `ViewModel`. Constantly noticing changes in the Model, the publishes "something changes" to those interested in such changes. The View automatically observes publications and pulls data and rebuilds.
 
 > Make a random number of cards appear each time a theme button is chosen
 
@@ -245,4 +249,84 @@ After paras adjusting, theses are displayed beautifully:
 But these aren't.
 
 <img src="../images/cs193p-assignment1-2.png" alt="Works not so well" style="zoom:50%;" />
+
+After the user interacts with the View, the View calls Intent Function to the VM. The VM processes Intent and modifies the Model. This is often seen in *Store Data* process. Make sure to leave database access statements in the VM.
+
+### Varieties of Types
+
+What's a class and what's a protocol? The `ViewModel` is a class and the `View` or `body var`  is protocol.
+
+#### `struct` and `class`
+
+Both `struct` and `class` have:
+
+- stored `var`s
+
+- computed `var`s
+
+- constant `let`s
+
+- `function`s
+
+  ```swift
+  func multiply(operand: Int, by: Int) -> Int {
+      return operand * by 
+  }
+  
+  multiply(operand: 5, by: 6)
+  
+  func multiply(_ operand: Int, by otherOperand: Int) -> Int {
+      return operand * otherOperand
+  }
+  
+  multiply(5, by: 6)
+  
+  ```
+
+- `init`ializers
+
+Differences:
+
+| `struct`                                                     | `class`                                                      |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| Value type                                                   | Reference type                                               |
+| **Copied** When passed or assigned                           | Passed around via **pointers**                               |
+| Copy on write. (Doesn't actually copy until you modify it)   | Automatically reference counted. ( Tracking how many pointers points to the piece of memory, when it's zero, auto-cleans memory ) |
+| Functional Programming                                       | Object-oriented programming                                  |
+| No inheritance                                               | Inheritance (**single**)                                     |
+| "Free" `init` initializes ALL `var`s                         | "Free" `init` initializes NO `var`s                          |
+| Mutability must be explicitly stated                         | Always mutable                                               |
+| Your "go to" data structure                                  | Used in specific circumstances                               |
+| **Everything** you've seen and done so far is a `struct` except `View` which is a `protocol` | The `ViewModel` is always a `class`. Also, `UIKit` is `class`-based |
+
+#### Generics
+
+We just don't care the type.
+
+For instance `Array`, in Swift arrays are implemented by `template` in C++.  The name here is called `Type Parameter`. Swift combines these with protocols, which makes it very powerful.
+
+#### Functions as Types
+
+```swift
+var operation: (Double) -> (Double)
+//is a var called operation
+
+//We have a function takes a Double returns a Double:
+func sqaure(operand: Double) -> Double {
+    return operand * operand
+}
+operation = square
+//assigns a value to operation var
+let result1 = operation(4)
+//result1 is 16
+
+operation = sqrt
+//sqrt is a built-in function
+let result2 = operation(2)
+//result2 is 4
+```
+
+*Closures*: Something like in-line functions but quite diferent.
+
+### Back to Demo
 
