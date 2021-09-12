@@ -354,7 +354,7 @@ let result2 = operation(2)
 
 As covered in the MVVM, our app in this stage needs to separate models and views.
 
-For this situation, we create 2 different Swift file (`.swift`), one is `EmojiMemoryGame.swift`, the other `MemoryGame.swift`. The former is called specifically `emoji` game so it's our `ViewModel`, the latter is like pure data, the only truth. So it's called `MemoryGame`. 
+For this situation, we create 2 different Swift file (`.swift`), one is `EmojiMemoryGame.swift`, the other `MemoryGame.swift`. The former is called specifically `emoji` game so it's our `ViewModel`, the latter is like pure data, the only truth. So it's called `MemoryGame`.  Make sure they are in the same directory as `ContentView.swift`
 
 #### `MemoryGame.swift`
 
