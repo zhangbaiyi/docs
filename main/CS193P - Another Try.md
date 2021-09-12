@@ -350,8 +350,87 @@ let result2 = operation(2)
 
 ### Back to Demo
 
-#### `private(set) var model: MemoryGame<String>`
+#### File Dependency
+
+As covered in the MVVM, our app in this stage needs to separate models and views.
+
+For this situation, we create 2 different Swift file (`.swift`), one is `EmojiMemoryGame.swift`, the other `MemoryGame.swift`. The former is called specifically `emoji` game so it's our `ViewModel`, the latter is like pure data, the only truth. So it's called `MemoryGame`. 
+
+#### `MemoryGame.swift`
+
+**The Model**.
+
+```swift
+import Foundation
+
+struct MemoryGame<CardContent> {
+    private(set) var cards: Array<Card>
+    
+    func choose(_ card: Card){
+        //no keyword.
+        //choose(curCard)
+    }
+
+    struct Card {
+        var isFaceUp: Bool
+        var isMatched: Bool
+        var content: CardContent
+    }
+}
+
+```
+
+Generics - `CardContent`
 
 `private`: access control. Prevent the View from touching our model.
 
 `(set)`: This makes `get` gets default (internal) access control level but `set` private.
+
+You can look at them but you can't touch 'em.
+
+#### `EmojiMemoryGame.swift`
+
+```swift
+import SwiftUI
+
+class EmojiMemoryGame {
+    private var model: MemoryGame<String> = ?
+    var cards: Array<MemoryGame<String>.Card> {
+        return model.cards
+    }
+}
+
+```
+
+Your `ViewModel` creates a model. 
+
+The `var cards` provide the `View` with a bridge to let the `View` know what card to display without letting `View` touch the `Model`.
+
+Continue implementing:
+
+We haven't implement the `initializer` in the Model. So back to the Model struct:
+
+```swift
+struct MemoryGame<CardContent> {
+    private(set) var cards: Array<Card>
+    
+    func choose(_ card: Card){
+        //no keyword.
+        //choose(curCard)
+    }
+  
++  	init(numberOfPairOfCards: Int) {
++      cards = Array<Card>()
++    }
+  
+
+    struct Card {
+        var isFaceUp: Bool
+        var isMatched: Bool
+        var content: CardContent
+    }
+}
+```
+
+
+
