@@ -199,9 +199,6 @@ Here is a partial list of concepts this assignment is intended to let you gain p
 16. Running your application in different simulators
 
 #### Extra Credits
-Data flows from Model to View (i.e. read-only). Any change in the model will cause the affected parts of the view to be rebuilt.
-
-**`ViewModel`**: Binds View to Model. Sort of a **Interpreter**. A **Gatekeeper**. The View will always get data from the Model from The `ViewModel`. Constantly noticing changes in the Model, the publishes "something changes" to those interested in such changes. The View automatically observes publications and pulls data and rebuilds.
 
 > Make a random number of cards appear each time a theme button is chosen
 
@@ -249,6 +246,10 @@ After paras adjusting, theses are displayed beautifully:
 But these aren't.
 
 <img src="../images/cs193p-assignment1-2.png" alt="Works not so well" style="zoom:50%;" />
+
+Data flows from Model to View (i.e. read-only). Any change in the model will cause the affected parts of the view to be rebuilt.
+
+**`ViewModel`**: Binds View to Model. Sort of a **Interpreter**. A **Gatekeeper**. The View will always get data from the Model from The `ViewModel`. Constantly noticing changes in the Model, the publishes "something changes" to those interested in such changes. The View automatically observes publications and pulls data and rebuilds.
 
 After the user interacts with the View, the View calls Intent Function to the VM. The VM processes Intent and modifies the Model. This is often seen in *Store Data* process. Make sure to leave database access statements in the VM.
 
