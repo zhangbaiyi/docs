@@ -14,8 +14,6 @@
 
 
 
-:coffin::computer::computer_mouse::keyboard::calendar::icecream::coffee:
-
 <p align='center'>
     <a href="https://github.com/zhangbaiyi/slowandsteady" target="_blank"><img alt="Website" src="https://img.shields.io/tokei/lines/github/zhangbaiyi/slowandsteady?style=flat-square"></a>
     <a href="https://github.com/zhangbaiyi/slowandsteady/issues" target="_blank"><img alt="Website" src="https://img.shields.io/github/issues/zhangbaiyi/slowandsteady?style=flat-square"></a>
@@ -23,13 +21,7 @@
     <a href="https://github.com/zhangbaiyi/slowandsteady/pulls" target="_blank"><img alt="Website" src="https://img.shields.io/github/issues-pr-closed/zhangbaiyi/slowandsteady?style=flat-square"></a>
 
 
-
-
 ​    
-
-作学习状之自留地
-
-:potato: 学不学习不重要，有个学习的样子很重要。
 
 :beers: 本仓库储存仓主写的关于学习的文档，可以直接在`products`中下载`.pdf`等格式。
 
