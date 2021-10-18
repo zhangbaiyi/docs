@@ -549,6 +549,6 @@ class EmojiMemoryGame {
 }
 ```
 
+## Lecture 4 - The Game Logic
 
-
-## Reading 1 - Notes from iBook
+### 
