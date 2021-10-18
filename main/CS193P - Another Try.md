@@ -166,6 +166,87 @@ In the following example, a [`ScrollView`](doc://com.apple.documentation/documen
 
 The `HStack` uses **all the space it can**. But the `LazyVGrid` distributes the space quite differently. It uses all the space horizontally but the least possible space vertically.
 
+### Homework - Assignment 1
+
+[CS193P - Programming Assignment 1](https://cs193p.sites.stanford.edu/sites/g/files/sbiybj16636/files/media/file/assignment_1.pdf)
+
+After this assignment, what really matters to me is that I fixed an issue to make images and text align in the ideal way.
+
+If you hardcode `VStack` of `Button`'s `Image` and `Text`, when you `HStack` the `VStack`s they don't align due to the SF Symbol images are in different sizes. To solve this, use the `.fixedSize()` and `frame()` methods in `View`s
+
+Secondly, the multi-theme problem, can be easily solved use a 2-D array. But the array had better not to be `let`. Because to display them in unpredictable order, we call `array.shuffle()` in the theme button actions. Thanks to Swift's simplicity this is relatively easy.
+*`Model`-`View`-`ViewModel`*
+
+#### Things to Learn 
+
+Here is a partial list of concepts this assignment is intended to let you gain practice with or otherwise demonstrate your knowledge of. 
+
+1. Xcode 12 
+2. Swift 5.4 
+3. Writing code in the in-line function that supplies the value of a View’s body `var` 
+4. Syntax for passing closures (aka in-line functions) (i.e. code in { }) as arguments 
+5. Understanding the syntax of a `ViewBuilder` (e.g. “bag of Lego”) function 
+6. Using basic building block Views like `Text`, `Button`, `Spacer`, etc. 
+7. Putting Views together using `VStack`, `HStack`, etc. 
+8.  Modifying Views (using .font(), etc.) 
+9. Using `@State` (we’ll learn much more about this construct later, by the way) 
+10. Very simple use of Array 
+11. Using a Range (e.g. `0..<emojiCount`) as a subscript to an Array
+12. The SF Symbols application 
+13. Putting system images into your UI using `Image(systemName:)` 
+14. Looking things up in the documentation (Array and possibly Font) 
+15. `Int.random(in:)` (Extra Credit) 
+16. Running your application in different simulators
+
+#### Extra Credits
+
+> Make a random number of cards appear each time a theme button is chosen
+
+`emojiCount = Int.random(in: 4...24)` 
+
+> Try to come up with some sort of equation that relates the number of cards in the game to the width you pass when you create your `LazyVGrid’s GridItem(.adaptive(minimum:maximum:))` such that each time a theme button is chosen, the `LazyVGrid` makes the cards as big as possible without having to scroll.
+
+So I used a function to **roughly** calculate this value. Since I don't quite know how to access the exact width and height of the gaming area, I guessed the value instead. The shitty part of the code below which contains a random fraction number is the result of that.
+
+```swift
+func widthsThatBestFits(cardCount: Int) -> CGFloat{
+    var curWidth: CGFloat = UIScreen.main.bounds.width
+    var curHeight: CGFloat = UIScreen.main.bounds.height
+    curWidth = curWidth * 9/10
+    curHeight = curHeight * 2/3
+    var result : CGFloat = curWidth
+    var curRows: Int = 0
+    var curCols: Int = 0
+    for myRes in (1...Int(curWidth)).reversed() {
+        curCols = Int(floor(curWidth/CGFloat(myRes)))
+        curRows = Int(ceil(Double(cardCount / curCols)))
+        if (CGFloat(curRows*myRes)*3)>curHeight
+        {
+            continue
+        }
+        else{
+            result = CGFloat(myRes)
+            return result
+        }
+    }
+    return result
+}
+```
+
+This works well when `cardCount` is 4, but not well when it's 5. I think It'd be quite eloqunt if I knew the exact width/height of the center area. Maybe `lldb` debugger can help?
+
+But now let's call it a day and move on.
+
+Here's my app's screenshots
+
+After paras adjusting, theses are displayed beautifully:
+
+![Works kinda well](../images/cs193p-assignment1-1.png)
+
+But these aren't.
+
+<img src="../images/cs193p-assignment1-2.png" alt="Works not so well" style="zoom:50%;" />
+
 
 
 ## Letcure 3 - MVVM and the Swift type system
@@ -189,3 +270,285 @@ For the View, there are `@ObservedObejct`, `@Binding`, `.onReceive`, `@Environme
 **But what about the other direction?**
 
 After the user interacts with the View, the View calls Intent Function to the VM. The VM processes Intent and modifies the Model. This is often seen in *Store Data* process. Make sure to leave database access statements in the VM.
+
+
+### Varieties of Types
+
+What's a class and what's a protocol? The `ViewModel` is a class and the `View` or `body var`  is protocol.
+
+#### `struct` and `class`
+
+Both `struct` and `class` have:
+
+- stored `var`s
+
+- computed `var`s
+
+- constant `let`s
+
+- `function`s
+
+  ```swift
+  func multiply(operand: Int, by: Int) -> Int {
+      return operand * by 
+  }
+  
+  multiply(operand: 5, by: 6)
+  
+  func multiply(_ operand: Int, by otherOperand: Int) -> Int {
+      return operand * otherOperand
+  }
+  
+  multiply(5, by: 6)
+  
+  ```
+
+- `init`ializers
+
+Differences:
+
+| `struct`                                                     | `class`                                                      |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| Value type                                                   | Reference type                                               |
+| **Copied** When passed or assigned                           | Passed around via **pointers**                               |
+| Copy on write. (Doesn't actually copy until you modify it)   | Automatically reference counted. ( Tracking how many pointers points to the piece of memory, when it's zero, auto-cleans memory ) |
+| Functional Programming                                       | Object-oriented programming                                  |
+| No inheritance                                               | Inheritance (**single**)                                     |
+| "Free" `init` initializes ALL `var`s                         | "Free" `init` initializes NO `var`s                          |
+| Mutability must be explicitly stated                         | Always mutable                                               |
+| Your "go to" data structure                                  | Used in specific circumstances                               |
+| **Everything** you've seen and done so far is a `struct` except `View` which is a `protocol` | The `ViewModel` is always a `class`. Also, `UIKit` is `class`-based |
+
+#### Generics
+
+We just don't care the type.
+
+For instance `Array`, in Swift arrays are implemented by `template` in C++.  The name here is called `Type Parameter`. Swift combines these with protocols, which makes it very powerful.
+
+#### Functions as Types
+
+```swift
+var operation: (Double) -> (Double)
+//is a var called operation
+
+//We have a function takes a Double returns a Double:
+func sqaure(operand: Double) -> Double {
+    return operand * operand
+}
+operation = square
+//assigns a value to operation var
+let result1 = operation(4)
+//result1 is 16
+
+operation = sqrt
+//sqrt is a built-in function
+let result2 = operation(2)
+//result2 is 4
+```
+
+*Closures*: Something like in-line functions but quite diferent.
+
+### Back to Demo
+
+#### File Dependency
+
+As covered in the MVVM, our app in this stage needs to separate models and views.
+
+For this situation, we create 2 different Swift file (`.swift`), one is `EmojiMemoryGame.swift`, the other `MemoryGame.swift`. The former is called specifically `emoji` game so it's our `ViewModel`, the latter is like pure data, the only truth. So it's called `MemoryGame`.  Make sure they are in the same directory as `ContentView.swift`
+
+#### `MemoryGame.swift`
+
+**The Model**.
+
+```swift
+import Foundation
+
+struct MemoryGame<CardContent> {
+    private(set) var cards: Array<Card>
+    
+    func choose(_ card: Card){
+        //no keyword.
+        //choose(curCard)
+    }
+
+    struct Card {
+        var isFaceUp: Bool
+        var isMatched: Bool
+        var content: CardContent
+    }
+}
+
+```
+
+Generics - `CardContent`
+
+`private`: access control. Prevent the View from touching our model.
+
+`(set)`: This makes `get` gets default (internal) access control level but `set` private.
+
+You can look at them but you can't touch 'em.
+
+#### `EmojiMemoryGame.swift`
+
+```swift
+import SwiftUI
+
+class EmojiMemoryGame {
+    private var model: MemoryGame<String> = ?
+    var cards: Array<MemoryGame<String>.Card> {
+        return model.cards
+    }
+}
+
+```
+
+Your `ViewModel` creates a model. 
+
+The `var cards` provide the `View` with a bridge to let the `View` know what card to display without letting `View` touch the `Model`.
+
+Continue implementing:
+
+We haven't implement the `initializer` in the Model. So back to the Model struct:
+
+```swift
+struct MemoryGame<CardContent> {
+    private(set) var cards: Array<Card>
+    
+    func choose(_ card: Card){
+        //no keyword.
+        //choose(curCard)
+    }
+  
+[+]  	init(numberOfPairOfCards: Int, createCardContent: (Int) -> CardContent) {
+[+]      	cards = Array<Card>()
+[+] 			for pairIndex in 0..<numberOfPairOfCards {
+[+]  					let content = createCardContent(pairIndex)
+[+]  					cards.append(Card(content: content))
+[+]    				cards.append(Card(content: content))
+[+]				}
+[+]
+[+]    }
+ 
+  //passing functions as arguments
+
+    struct Card {
+        var isFaceUp: Bool
+        var isMatched: Bool
+        var content: CardContent
+    }
+}
+```
+
+To use this `init()`, in our `ViewModel`
+
+```swift
+class EmojiMemoryGame {
+    private var model: MemoryGame<String> = MemoryGame<String>(numberOfPairsOfCards: 4, createCardContent: makeCardContent)
+    var cards: Array<MemoryGame<String>.Card> {
+        return model.cards
+    }
+}
+```
+
+```swift
+func makeCardContent(index: Int) -> String {
+  return "**smileyemoji**"
+}
+```
+
+#### Simplify Simple Function
+
+Above is equivalent to:
+
+```swift
+    private var model: MemoryGame<String> = 
+  		MemoryGame<String>(numberOfPairsOfCards: 4, createCardContent: { (index: Int) -> String in 
+          	return "**smileyemoji**" })
+```
+
+**Because it's just a function returns a certained string**, we don't need to point out types here. So this is equivalent to:
+
+```swift
+    private var model: MemoryGame<String> = 
+  		MemoryGame<String>(numberOfPairsOfCards: 4, createCardContent: { index in 
+          	return "**smileyemoji**" })
+```
+
+We don't need a "return" either because showing your string after `in` means this function returns a string.
+
+This is equivalent to:
+
+```swift
+    private var model: MemoryGame<String> = 
+  		MemoryGame<String>(numberOfPairsOfCards: 4, createCardContent: { index in "**smileyemoji**" })
+```
+
+Because `createCardContent` is the **last parameter** to the function and its **type is a `function`**, so in Swift we can do this:
+
+```swift
+    private var model: MemoryGame<String> = 
+  		MemoryGame<String>(numberOfPairsOfCards: 4){ _ in "**smileyemoji**" }
+```
+
+This is as simple as your code can be.
+
+**We can't get rid of the `'_'` ** bacause `in` means something is comming **in**, indicating that this is a function. This is probably how compiler checks the syntax. This is very @apple though.
+
+#### `static`
+
+We are now facing this:
+
+```swift
+class EmojiMemoryGame {
+    
+    let emojis = ["**array of emojis**"]
+   
+
+    private(set) var model: MemoryGame<String> = 
+  			MemoryGame<String>(numberOfPairsOfCards: 4){ pairIndex in
+                                                    emojis[pairIndex]
+                                                  	}
+    
+    var cards: Array<MemoryGame<String>.Card> {
+        return model.cards
+    }
+}
+```
+
+::red_circle:Cannot use instance member 'emojis' within **property** initializer; property initializers run before 'self' is available
+
+**self**: The `EmojiMemoryGame` itself.
+
+The order that `emojis` and `private(set) ... ` being initialized is **not determined**. Maybe you are using `emojis[]` before `emojis[]` initializes.
+
+`Init()` function solves this problem, because things can init in your preferred order.
+
+`Global Constant ` also solves this, but not a good code style.
+
+**`static`**: It's global but its name now includes the class name.
+
+`static let emojis = []` means `emojis[]` becomes `EmojiMemoryGame.emojis[]`
+
+We can do this to functions as well.
+
+```swift
+class EmojiMemoryGame {
+    
+    static let emojis = [...]
+    
+    static func createMemoryGame() -> MemoryGame<String> {
+        MemoryGame<String>(numberOfPairsOfCards: 4){ pairIndex in
+                    emojis[pairIndex] }
+    }
+
+    private(set) var model: MemoryGame<String> = createMemoryGame()
+    
+    var cards: Array<MemoryGame<String>.Card> {
+        return model.cards
+    }
+}
+```
+
+
+
+## Reading 1 - Notes from iBook
