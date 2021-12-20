@@ -1,8 +1,6 @@
 
 
-<div align=right><img src ="logo.png"/></div>
-
-# <center>slowandsteady<center>
+# <center>:beers:<center>
 
 
 
